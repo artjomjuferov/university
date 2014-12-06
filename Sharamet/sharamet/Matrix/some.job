@@ -1,0 +1,12 @@
+#PBS -N Matrix
+#PBS -o Matrix.out.$$
+#PBS -e Matrix.log
+#PBS -l nodes=1:cuda
+#PBS -S /bin/bash
+#PBS -q gpu
+
+cd /gpfs/home/practice_user/Shirkin/Matrix/
+
+cat $PBS_NODEFILE > machine.test
+
+nvcc -run -o Matrix.exe  Matrix.cu

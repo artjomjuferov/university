@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <cuda.h>
+#include <cuda_runtime.h>
+#include <cuComplex.h>
+#include <sm_11_atomic_functions.h>
+
+
+__global__ void initA(int *A, int n)
+{
+        int i = blockDim.x * blockIdx.x + threadIdx.x;
+        if (i < n)
+                A[i]=1;
+}
+
+
+__device__ double atomicAdd(double* address, double val)
+{
+        unsigned long long int* address_as_ull = (unsigned long long int*)address;
+        unsigned long long int old = *address_as_ull, assumed;
+        do
+        {
+                assumed = old;
+                old = atomicCAS(address_as_ull, assumed,__double_as_longlong(val + __longl$
+        } while (assumed !=old);
+        return __longlong_as_double(old);
+}
+
+__global__ void reduce ( int * inData,int * outData,int n)
+{
+        __shared__ int data [256];
+
+        int tid = threadIdx.x;
+        int i = blockIdx.x * blockDim.x + threadIdx.x;
+
+        data[tid]=0;
+
+        while (i<n)
+        {
+
+                data [tid] +=inData[i];
+                i+=blockDim.x*gridDim.x;
+
+        }
+
+        //data [tid] = inData [i]; // load into shared memory
+        __syncthreads ();
+        for ( int s = 1; s < blockDim.x; s <<= 1 )
+        {
+                int index = 2 * s * tid; // better replace with >>
+                if ( index < blockDim.x )
+                data [index] += data [index + s];
+                __syncthreads ();
+        }
+        if ( tid == 0 ) // write result of block reduction
+        atomicAdd(&(outData[0]), data[0]);
+
+}
+__host__ int main(void) {
+
+        cudaError_t err = cudaSuccess;
+        cudaEvent_t start, stop;
+
+        int n = 50000;
+
+        size_t size = n * sizeof(int);
+
+
+        cudaEventCreate(&start);
+        cudaEventCreate(&stop);
+
+        int *h_A = (int *)malloc(size);
+        for(int i=0;i<n;i++)h_A[i]=0;
+
+
+
+        int *d_A = NULL;
+        err = cudaMalloc((void **)&d_A, size);if (err != cudaSuccess){printf("malloc_d_A e$
+
+        int *d_B = NULL;
+        err = cudaMalloc((void **)&d_B, size);if (err != cudaSuccess){printf("malloc_d_B e$
+
+        int threadsPerBlock = 256; // 256 threads
+        int blocksPerGrid = (n +threadsPerBlock-1)/threadsPerBlock;
+        initA<<<blocksPerGrid, threadsPerBlock>>>(d_A, n);err = cudaGetLastError();if (err$
+
+        cudaEventRecord(start,0);
+
+        blocksPerGrid = 84;
+        reduce<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, n);err = cudaGetLastError();i$
+
+        cudaEventRecord(stop,0);
+        cudaEventSynchronize(stop);
+
+
+        cudaMemcpy(h_A, d_B, size, cudaMemcpyDeviceToHost);
+
+        float Time=0.0f;
+        cudaEventElapsedTime(&Time,start,stop);
+
+        printf("Time: %.2f msec.\n",Time);
+
+        printf("%d \n",h_A[0]);
+
+        err = cudaFree(d_A);
+
+        free(h_A);
+
+
+        return 0;
+}
+

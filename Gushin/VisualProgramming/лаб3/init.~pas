@@ -1,0 +1,219 @@
+unit init;
+
+interface
+
+uses
+      Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, Menus, Task, About, ExtCtrls, ImgList,
+  ToolWin, ComCtrls;
+
+type
+    Point = record
+        x,y : real;
+    end;
+    TPoint = array[1..10000] of Point;
+    TMatrix=array[0..1,0..1] of real;
+var
+    fileName : string = '1.txt';
+    t,t2,OutMas: Tpoint;
+    cnt,a_ans,c_ans : integer;
+    b_ans : integer;
+    ans : Point;
+    CntPoint : integer = 0;
+    FlagTriangle : boolean = false;
+    FlagCircle : boolean = false;
+    FlagNormal: boolean = false;
+    Matrix: TMatrix;
+    xc,yc,xo,yo,Rmax : real;
+procedure DrawTriangle(TargetCanvas : TCanvas; SX,SY,u0,v0 : integer);
+procedure DrawPoint(Targetpaint : TpaintBox;sx,sy,u0,v0 :integer;color : Tcolor);
+procedure MatrixRotate(var m : Tmatrix; x : real);
+procedure ApplyMatToPoint(PointIn : Point; var PointOut : Point; mat : tMatrix; Xc,Yc : real);
+procedure FindCross(P1,P2,P3,P4 : Point;var Xr,Yr : real);
+procedure DrawRmax(TargetCanvas : TCanvas; SX,SY,u0,v0 : integer);
+procedure FindMaxSide(var b,e : Point;sx,sy,u0,v0 : integer);
+Procedure Normal(b,e : Point;sx,sy,u0,v0 : integer);
+procedure DrawNormal(TargetCanvas : TCanvas;sx,sy,u0,v0,a,b,c : integer);
+
+
+
+
+
+implementation
+
+procedure DrawTriangle(TargetCanvas : TCanvas; SX,SY,u0,v0 : integer);
+var
+   i,u1,v1,u2,v2 : integer;
+   cx,cy : real;
+begin
+       with TargetCanvas do begin
+            Pen.Color := clblue;
+            cx := SX;
+            cy := SY;
+            //Brush.Color := clwhite;
+            t2[4] := t2[1];
+            for i := 1 to 3 do begin
+                u1:= u0 + round(t2[i].X * cx);
+                v1:= v0 - round(t2[i].Y * cy);
+                u2:= u0 + round(t2[i+1].X * cx);
+                v2:= v0 - round(t2[i+1].Y * cy);
+                MoveTo(u1,v1);
+                LineTo(u2,v2);
+            end;
+       end;//with
+end;
+
+procedure DrawPoint(Targetpaint : TpaintBox;sx,sy,u0,v0 :integer;color : Tcolor);
+var
+   i,u1,v1 : integer;
+begin
+     with Targetpaint.Canvas do begin
+          pen.color := color;
+          brush.Color := color;
+          for i := 1 to cnt do begin
+              u1 := u0 + round(t[i].x * sx);
+              v1 := v0 - round(t[i].y * sy);
+              ellipse(u1 - 2,v1 - 2,u1 + 2,v1 + 2);
+          end;
+     end;
+end;
+
+procedure MatrixRotate(var m : Tmatrix; x : real);
+var
+   sx,cx : real;
+begin
+    sX:=sin(x);
+    cX:=cos(x);
+    M[0,0]:=cX;
+    M[0,1]:=-sX;
+    M[1,0]:=sX;
+    M[1,1]:=cX;
+end;
+
+procedure ApplyMatToPoint(PointIn : Point; var PointOut : Point;mat : tMatrix;Xc,Yc : real);
+var
+  x,y : real;
+begin
+  x := ((PointIn.x - Xc) * mat[0][0]) + ((PointIn.y - Yc) * mat[0][1]);
+  y := ((PointIn.x - Xc) * mat[1][0]) + ((PointIn.y - Yc) * mat[1][1]);
+  PointOut.x := x + Xc;
+  PointOut.y := y + Yc;
+end;
+
+procedure FindCross(P1,P2,P3,P4 : Point;var Xr,Yr : real);
+var
+   D1,D2,D3,Lam,Xa,Xb1,Xb,Xc,Ya,Yb1,Yb,Yc,rr : real;
+begin
+    Xa := P1.X; Xb1 := P2.X; Ya := P1.Y; Yb1 := P2.Y;// A'B'
+    Xb := P3.X; Xc := P4.X;  Yb:=P3.Y; Yc := P4.Y; // BC
+    D1 := Ya - Yb1; D2 := Xb1 - Xa; D3 := Xa * Yb1 - Xb1 * Ya;
+    rr := D1 * (Xc - Xb) + D2 * (Yc - Yb);
+    if (rr = 0) then begin
+       Xr := Xc;
+       Yr := Ya;
+    end
+    else begin
+        Lam := -(D3 + Xb * D1 + Yb * D2) / rr;
+        Xr := Xb + Lam * (Xc - Xb);
+        Yr := Yb + Lam * (Yc - Yb);
+    end;
+end;
+
+procedure DrawRmax(TargetCanvas : TCanvas; SX,SY,u0,v0 : integer);
+var
+   u1,v1,r : integer;
+begin
+      with TargetCanvas do begin
+          Pen.Color := clSilver;
+          Font.Color:=clBlack;
+          Font.Name:='Small Fonts';
+          Font.Size:=7;
+          Brush.Color:=clFuchsia;
+          u1 := u0 + round(Xo * sx);
+          v1 := v0 - round(Yo * sy);
+          Ellipse(u1 - 2,v1 - 2,u1 + 2,v1 + 2);
+          Brush.Style := bsClear;
+          r := round(Rmax * sx);
+          Ellipse(u1 - r,v1 - r,u1 + r,v1 + r);
+          Brush.Style:=bsSolid;
+       end;//with
+end;
+
+procedure FindMaxSide(var b,e : Point;sx,sy,u0,v0 : integer);
+var
+   i : integer;
+   MaxSide,u1,u2,v1,v2 : int64;
+begin
+   MaxSide := -100;
+   t2[4] := t2[1];
+   for i := 1 to 3 do begin
+       u1:= u0 + round(t2[i].X * sx);
+       v1:= v0 - round(t2[i].Y * sy);
+       u2:= u0 + round(t2[i + 1].X * sx);
+       v2:= v0 - round(t2[i + 1].Y * sy);
+       if (sqr(u1 - u2) + sqr(v1 - v2) > MaxSide) then begin
+          MaxSide := sqr(u1 - u2) + sqr(v1 - v2);
+          b := t2[i];
+          e := t2[i + 1];
+       end;
+   end;
+end;
+
+procedure Normal(b,e : Point;sx,sy,u0,v0 : integer);
+var
+   u1,v1,u2,v2,a1,a2,b1,b2,c1,c2 : integer;
+begin
+    u1 := u0 + round(b.X * sx);
+    v1 := v0 - round(b.Y * sy);
+    u2 := u0 + round(e.X * sx);
+    v2 := v0 - round(e.Y * sy);
+    a1 := v1 - v2;
+    b1 := u2 - u1;
+    c1 := -a1*u1 - b1*v1;
+    a2 := -b1;
+    b2 := a1;
+    u1 := u0 + round(xo * sx);
+    v1 := v0 - round(yo * sy);
+    c2 := -a2*u1 - b2*v1;
+    ans.y := - (a1 * c2 - a2 * c1) / (a1 * b2 - a2 * b1);
+    ans.x := - (c1 * b2 - c2 * b1) / (a1 * b2 - a2 * b1);
+    a_ans := a2;
+    b_ans := b2;
+    c_ans := c2;
+end;
+procedure drawnormal(TargetCanvas : TCanvas;sx,sy,u0,v0,a,b,c : integer);
+var
+   u1,v1,u2,v2,r,u3,v3 : integer;
+   d,mult,ax,bx,by,ay : real;
+begin
+   r := round(Rmax * sx);
+   d := r*r;
+   mult := sqrt(d / (a * a + b * b));
+   ax := b * mult;
+   bx := - b * mult;
+   ay := - a * mult;
+   by := a * mult;
+   u3 := u0 + round(Xo * sx);
+   v3 := v0 - round(Yo * sy);
+   with TargetCanvas do begin
+        u1 := round(ax) + u3;
+        v1 := round(ay) + v3;
+        u2 := round(bx) + u3;
+        v2 := round(by) + v3;
+        pen.color := clgreen;
+        MoveTo(u1,v1);
+        LineTo(u2,v2);
+    end;
+end;
+
+
+
+
+
+
+
+
+
+
+
+end.

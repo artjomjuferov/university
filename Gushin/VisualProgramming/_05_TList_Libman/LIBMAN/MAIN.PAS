@@ -1,0 +1,262 @@
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Buttons, ComCtrls, ExtCtrls, Grids, Menus;
+
+type
+  TForm1 = class(TForm)
+    Panel1: TPanel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    Panel2: TPanel;
+    BitBtn1: TBitBtn;
+    Shape1: TShape;
+    Shape2: TShape;
+    Shape3: TShape;
+    Shape4: TShape;
+    Shape5: TShape;
+    Shape6: TShape;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    MainMenu1: TMainMenu;
+    mn_Help: TMenuItem;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Edit6: TEdit;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    Edit9: TEdit;
+    Edit10: TEdit;
+    Edit11: TEdit;
+    Edit12: TEdit;
+    Edit13: TEdit;
+    Edit14: TEdit;
+    Edit15: TEdit;
+    Edit16: TEdit;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    EdInput: TEdit;
+    Label1: TLabel;
+    EdEps: TEdit;
+    Label2: TLabel;
+    SpeedButton1: TSpeedButton;
+    ListBox1: TListBox;
+    mn_Rezult: TMenuItem;
+    StringGrid1: TStringGrid;
+    GroupBox1: TGroupBox;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    procedure StringGrid1DrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure FormCreate(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure mn_RezultClick(Sender: TObject);
+    procedure mn_HelpClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+  private
+    { Private declarations }
+    MasEdit:array[1..16]of TEdit;
+  public
+    { Public declarations }
+    procedure FillEdits;
+    procedure GetEdits;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.DFM}
+  Uses Un_Lab4,Result,About;
+
+procedure TForm1.StringGrid1DrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+  var st:string;
+begin
+   if (Acol=0)and(aRow>0) then Str(arow,st)
+                          else
+   if (Acol>0)and(aRow=0) then Str(acol,st)
+                          else
+   if (Acol>0)and(aRow>0)and(Mas[arow,acol]<777) then
+                                 Str(Mas[arow,Acol]:4:1,st)
+                          else
+    if (Acol>0)and(aRow>0)and(Mas[arow,acol]=777) then
+                                 st:=''
+                          else st:='';
+   with  StringGrid1.Canvas do begin
+
+        if (ARow=0)or(ACol=0) then  begin
+                                     Brush.Color:=clSilver;
+                                     Font.Name:='Small Fonts';
+                                     Font.Size:=7;
+                                     Font.Style:=[fsBold];
+                                    end
+                              else  begin
+                                      Brush.Color:=clWhite;
+                                      Font.Name:='Small Fonts';
+                                      Font.Size:=7;
+                                      Font.Style:=[];
+                                     end;
+         if (Acol>0)and(aRow>0)and(Mas[arow,acol]=777) then
+                                            Brush.Color:=clBlue;
+        FillRect(rect);
+        TextOut(rect.Left,Rect.Top,st);
+   end;
+   
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+    MasEdit[1]:=Edit1;
+    MasEdit[2]:=Edit2;
+    MasEdit[3]:=Edit3;
+    MasEdit[4]:=Edit4;
+    MasEdit[5]:=Edit5;
+    MasEdit[6]:=Edit6;
+    MasEdit[7]:=Edit7;
+    MasEdit[8]:=Edit8;
+    MasEdit[9]:=Edit9;
+    MasEdit[10]:=Edit10;
+    MasEdit[11]:=Edit11;
+    MasEdit[12]:=Edit12;
+    MasEdit[13]:=Edit13;
+    MasEdit[14]:=Edit14;
+    MasEdit[15]:=Edit15;
+    MasEdit[16]:=Edit16;
+    FillEdits;
+    FillMas;
+end;
+
+procedure TForm1.FillEdits;
+   var i:integer; st:string;
+begin
+   for i:=1 to Corners do begin
+        Str(MasCorners[i].t:5:1,st);
+        MasEdit[i].Text:=st
+   end;
+   Str(t0:5:1,st);EdInput.Text:=st;
+   Str(Epsilon:7:5,st);EdEps.Text:=st;
+end;
+
+procedure TForm1.BitBtn2Click(Sender: TObject);
+begin
+   GetEdits;
+   FillMas;
+   StringGrid1.Refresh;
+end;
+
+procedure TForm1.BitBtn3Click(Sender: TObject);
+begin
+   FillEdits;
+   FillMas;
+   StringGrid1.Refresh;
+end;
+
+procedure TForm1.GetEdits;
+   var i,code:integer;
+       r:real;
+begin
+   for i:=1 to Corners do begin
+       Val(MasEdit[i].Text,r,code);
+       if code=0 then MasCorners[i].t:=r;
+   end;
+   Val(EdInput.Text,r,code);
+   if code=0 then t0:=r;
+    Val(EdEps.Text,r,code);
+   if code=0 then Epsilon:=r;
+   FillMas;
+end;
+
+procedure TForm1.SpeedButton1Click(Sender: TObject);
+  var i,j,k:integer;
+     d,t_new,r:real;
+     st:string;
+begin  RabMas:=Mas;
+       ListBox1.Clear; flResult:=FALSE;
+   k:=0;
+   Repeat
+      d:=0;
+      for i:=2 to m-1 do
+         for j:=2 to n-1 do  begin
+            //обход угловых внутренних точек (8 штук!)
+            if((i=11)and(j=11))or((i=31)and(j=11))or
+               ((i=11)and(j=31))or((i=31)and(j=31))or
+               ((i=16)and(j=16))or((i=16)and(j=26))or
+               ((i=26)and(j=16))or((i=26)and(j=26))then Continue;
+            if(RabMas[i-1,j]<777)and(RabMas[i+1,j]<777)
+                     and(RabMas[i,j+1]<777)and(RabMas[i,j-1]<777) then
+                              begin
+              t_new:=0.25*
+                (RabMas[i-1,j]+RabMas[i+1,j]+RabMas[i,j+1]+RabMas[i,j-1]);
+                r:=Abs(t_new-RabMas[i,j]);
+                if r>d then d:=r;
+                RabMas[i,j]:=t_new;
+            end;
+         end;
+      Inc(k);
+      Str(d:8:4,st);ListBox1.Items.Add(IntToStr(k)+' '+st);
+      MasConverg[k]:=d;
+   until (d<Epsilon)or(k>MaxStep);
+   kStep:=k;
+   flResult:=TRUE;
+end;
+
+procedure TForm1.mn_RezultClick(Sender: TObject);
+begin
+  if flResult then
+    frResult.ShowModal;
+end;
+
+procedure TForm1.mn_HelpClick(Sender: TObject);
+begin
+  AboutBox.ShowModal;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+     Edit1.text:='1';  Edit2.text:='1';
+     Edit3.text:='11';  Edit4.text:='11'; Edit5.text:='11';  Edit6.text:='11';
+     Edit7.text:='16';  Edit8.text:='16';
+     Edit9.text:='26';  Edit10.text:='26';
+     Edit11.text:='31';  Edit12.text:='31'; Edit13.text:='31';  Edit14.text:='31';
+     Edit15.text:='41';  Edit16.text:='41';
+     GetEdits;//FillMas;
+   StringGrid1.Refresh;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+     Edit11.text:='1';  Edit3.text:='1';
+     Edit1.text:='11';  Edit4.text:='11'; Edit15.text:='11';  Edit12.text:='11';
+     Edit7.text:='16';  Edit9.text:='16';
+     Edit8.text:='26';  Edit10.text:='26';
+     Edit2.text:='31';  Edit5.text:='31'; Edit13.text:='31';  Edit16.text:='31';
+     Edit6.text:='41';  Edit14.text:='41';
+     GetEdits; //FillMas;
+   StringGrid1.Refresh;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+     Edit11.text:='1';  Edit3.text:='1';
+     Edit1.text:='1';  Edit4.text:='1'; Edit15.text:='1';  Edit12.text:='1';
+     Edit7.text:='10';  Edit9.text:='10';
+     Edit8.text:='10';  Edit10.text:='10';
+     Edit2.text:='1';  Edit5.text:='1'; Edit13.text:='1';  Edit16.text:='1';
+     Edit6.text:='1';  Edit14.text:='1';
+     GetEdits; //FillMas;
+   StringGrid1.Refresh;
+end;
+
+end.

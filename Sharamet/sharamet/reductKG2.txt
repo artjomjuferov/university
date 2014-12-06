@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <cuda.h>
+#include <cuda_runtime.h>
+#include <cuComplex.h>
+#include <sm_11_atomic_functions.h>
+
+
+__global__ void initA(int *A, int n)
+{
+        int i = blockDim.x * blockIdx.x + threadIdx.x;
+        if (i < n)
+                A[i]=1;
+}
+
+__global__ void reduce ( int * A,int * C,int n)
+{
+        __shared__ int data [256];
+
+        int tid = threadIdx.x;
+        int i = blockIdx.x * blockDim.x + threadIdx.x;
+
+        data[tid]=0;
+        while (i<n)
+        {
+                data [tid] +=A[i];
+                i+=blockDim.x*gridDim.x;
+        }
+
+        __syncthreads ();
+        for ( int s = 1; s < blockDim.x; s <<= 1 )
+        {
+                int index = 2 * s * tid;
+                if ( index < blockDim.x ) data [index] += data [index + s];
+                __syncthreads ();
+        }
+        if ( tid == 0 ) atomicAdd(&(C[0]), data[0]);
+
+}
+__host__ int main(void) {
+
+        cudaError_t err = cudaSuccess;
+        cudaEvent_t start, stop;
+
+        int n = 50000;
+
+        size_t size = n * sizeof(int);
+
+
+        cudaEventCreate(&start);
+        cudaEventCreate(&stop);
+
+        int *h_A = (int *)malloc(size);
+        for(int i=0;i<n;i++)h_A[i]=0;
+
+
+
+        int *d_A = NULL;
+        err = cudaMalloc((void **)&d_A, size);if (err != cudaSuccess){printf("malloc_d_A e$
+
+        int *d_C = NULL;
+        err = cudaMalloc((void **)&d_C, size);if (err != cudaSuccess){printf("malloc_d_B e$
+
+        int threadsPerBlock = 256; // 256 threads
+        int blocksPerGrid = (n +threadsPerBlock-1)/threadsPerBlock;
+        initA<<<blocksPerGrid, threadsPerBlock>>>(d_A, n);err = cudaGetLastError();if (err$
+
+        cudaEventRecord(start,0);
+
+        blocksPerGrid = 84;
+        reduce<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_C, n);err = cudaGetLastError();i$
+
+        cudaEventRecord(stop,0);
+        cudaEventSynchronize(stop);
+
+
+        cudaMemcpy(h_A, d_C, size, cudaMemcpyDeviceToHost);
+
+        float Time=0.0f;
+        cudaEventElapsedTime(&Time,start,stop);
+
+        printf("Time: %.2f msec.\n",Time);
+
+        printf("%d \n",h_A[0]);
+
+        err = cudaFree(d_A);     
+	free(h_A);
+
+
+        return 0;
+}
+

@@ -1,0 +1,157 @@
+Matrix.cu(31): error: identifier "bs" is undefined
+
+Matrix.cu(31): error: identifier "bx" is undefined
+
+Matrix.cu(31): error: identifier "tx" is undefined
+
+Matrix.cu(31): error: identifier "sum" is undefined
+
+Matrix.cu(32): error: expected a declaration
+
+Matrix.cu(57): warning: parsing restarts here after previous syntax error
+
+Matrix.cu(58): error: this declaration has no storage class or type specifier
+
+Matrix.cu(58): error: identifier "d_B" is undefined
+
+Matrix.cu(58): error: identifier "size2" is undefined
+
+Matrix.cu(59): error: expected a declaration
+
+Matrix.cu(64): warning: parsing restarts here after previous syntax error
+
+Matrix.cu(65): error: this declaration has no storage class or type specifier
+
+Matrix.cu(65): error: variable "err" has already been defined
+
+Matrix.cu(65): error: identifier "d_C" is undefined
+
+Matrix.cu(66): error: expected a declaration
+
+Matrix.cu(71): warning: parsing restarts here after previous syntax error
+
+Matrix.cu(73): error: identifier "numElements" is undefined
+
+Matrix.cu(73): error: identifier "k" is undefined
+
+Matrix.cu(79): error: this declaration has no storage class or type specifier
+
+Matrix.cu(79): error: declaration is incompatible with "void initA(int *, int)"
+(5): here
+
+Matrix.cu(79): error: expected a ";"
+
+Matrix.cu(80): error: this declaration has no storage class or type specifier
+
+Matrix.cu(80): error: variable "err" has already been defined
+
+Matrix.cu(81): error: expected a declaration
+
+Matrix.cu(86): warning: parsing restarts here after previous syntax error
+
+Matrix.cu(87): error: this declaration has no storage class or type specifier
+
+Matrix.cu(87): error: variable "blocksPerGrid" has already been defined
+
+Matrix.cu(89): error: this declaration has no storage class or type specifier
+
+Matrix.cu(89): error: declaration is incompatible with "void initB(int *, int)"
+(14): here
+
+Matrix.cu(89): error: expected a ";"
+
+Matrix.cu(90): error: this declaration has no storage class or type specifier
+
+Matrix.cu(90): error: variable "err" has already been defined
+
+Matrix.cu(91): error: expected a declaration
+
+Matrix.cu(96): warning: parsing restarts here after previous syntax error
+
+Matrix.cu(99): error: this declaration has no storage class or type specifier
+
+Matrix.cu(99): error: declaration is incompatible with "void MatMult(int *, int *, int *, int)"
+(21): here
+
+Matrix.cu(99): error: expected a ";"
+
+Matrix.cu(100): error: this declaration has no storage class or type specifier
+
+Matrix.cu(100): error: variable "err" has already been defined
+
+Matrix.cu(101): error: expected a declaration
+
+Matrix.cu(106): warning: parsing restarts here after previous syntax error
+
+Matrix.cu(107): error: this declaration has no storage class or type specifier
+
+Matrix.cu(107): error: declaration is incompatible with "cudaError_t cudaEventSynchronize(cudaEvent_t)"
+/gpfs/apps/cuda/bin/../include/cuda_runtime_api.h(1941): here
+
+Matrix.cu(107): error: identifier "stop" is undefined
+
+Matrix.cu(108): error: this declaration has no storage class or type specifier
+
+Matrix.cu(108): error: declaration is incompatible with "cudaError_t cudaEventElapsedTime(float *, cudaEvent_t, cudaEvent_t)"
+/gpfs/apps/cuda/bin/../include/cuda_runtime_api.h(2007): here
+
+Matrix.cu(108): error: identifier "gpuTime" is undefined
+
+Matrix.cu(108): error: expected a ")"
+
+Matrix.cu(110): error: this declaration has no storage class or type specifier
+
+Matrix.cu(110): error: declaration is incompatible with "int printf(const char *, ...)"
+/usr/include/stdio.h(361): here
+
+Matrix.cu(110): error: a value of type "const char *" cannot be used to initialize an entity of type "int"
+
+Matrix.cu(110): error: expected a ")"
+
+Matrix.cu(112): error: this declaration has no storage class or type specifier
+
+Matrix.cu(112): error: declaration is incompatible with "cudaError_t cudaMemcpy(void *, const void *, size_t, cudaMemcpyKind)"
+/gpfs/apps/cuda/bin/../include/cuda_runtime_api.h(3274): here
+
+Matrix.cu(112): error: identifier "h_C" is undefined
+
+Matrix.cu(112): error: expected a ")"
+
+Matrix.cu(114): error: this declaration has no storage class or type specifier
+
+Matrix.cu(114): error: variable "err" has already been defined
+
+Matrix.cu(114): error: identifier "d_A" is undefined
+
+Matrix.cu(115): error: this declaration has no storage class or type specifier
+
+Matrix.cu(115): error: variable "err" has already been defined
+
+Matrix.cu(116): error: this declaration has no storage class or type specifier
+
+Matrix.cu(116): error: variable "err" has already been defined
+
+Matrix.cu(118): error: this declaration has no storage class or type specifier
+
+Matrix.cu(118): error: variable "printf" has already been defined
+
+Matrix.cu(118): error: a value of type "const char *" cannot be used to initialize an entity of type "int"
+
+Matrix.cu(119): error: expected a declaration
+
+Matrix.cu(120): error: this declaration has no storage class or type specifier
+
+Matrix.cu(120): error: variable "printf" has already been defined
+
+Matrix.cu(120): error: a value of type "const char *" cannot be used to initialize an entity of type "int"
+
+Matrix.cu(122): error: this declaration has no storage class or type specifier
+
+Matrix.cu(122): error: declaration is incompatible with "void free(void *)"
+/usr/include/stdlib.h(488): here
+
+Matrix.cu(124): error: expected a declaration
+
+Matrix.cu(125): error: expected a declaration
+
+68 errors detected in the compilation of "/tmp/tmpxft_00005a4c_00000000-6_Matrix.cpp1.ii".

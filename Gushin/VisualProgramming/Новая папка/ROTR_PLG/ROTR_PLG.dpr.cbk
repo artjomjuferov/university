@@ -1,0 +1,17 @@
+program ROTR_PLG;
+
+uses
+  Forms,
+  MainRotP in 'MainRotP.pas' {frMainRotP},
+  About in 'About.pas' {AboutBox},
+  Task in 'Task.pas' {Form1};
+
+{$R *.RES}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TfrMainRotP, frMainRotP);
+  Application.CreateForm(TAboutBox, AboutBox);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

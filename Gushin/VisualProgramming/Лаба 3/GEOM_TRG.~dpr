@@ -1,0 +1,16 @@
+program GEOM_TRG;
+
+uses
+  Forms,
+  Main in 'Main.pas' {frMain},
+  Un_TRG in 'Un_TRG.pas',
+  About_Box in 'About_Box.pas' {AboutBox};
+
+{$R *.RES}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TfrMain, frMain);
+  Application.CreateForm(TAboutBox, AboutBox);
+  Application.Run;
+end.
