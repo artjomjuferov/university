@@ -1,0 +1,16 @@
+Series1.Clear;  // √ŒƒŒ√–¿‘ 
+    rU :=0; rV :=0;
+     for i:=1 to KolMD do   Begin
+       xU := MasMD[i,1];
+       yV := MasMD[i,2];
+       Series1.AddArrow(rU,rV,rU + xU,rV + yV,'0');
+       rU := rU + xU; rV := rV + yV;
+     End;
+
+     ArrowSeries1.Clear;  // "®ÊËÍ"
+     rU :=Chart6.Width div 2; rV := rU;
+     for i:=1 to KolMD do   Begin
+       xU := MasMD[i,1];
+       yV := MasMD[i,2];
+       ArrowSeries1.AddArrow(rU,rV,rU + xU,rV + yV,'0');
+     End;

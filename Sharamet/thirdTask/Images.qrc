@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>goodGurad</file>
+        <file>rat</file>
+        <file>goodMichael</file>
+        <file>badHuman</file>
+        <file>cat</file>
+        <file>dog</file>
+        <file>badMichael</file>
+        <file>goodHuman</file>
+        <file>badGuard</file>
+        <file>lose</file>
+        <file>win</file>
+        <file>meetHuman</file>
+        <file>hideCat</file>
+        <file>meetGuard</file>
+        <file>meetMichael</file>
+        <file>hideRat</file>
+        <file>hideDog</file>
+    </qresource>
+</RCC>

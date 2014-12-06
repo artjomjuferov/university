@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1416866038 source:/home/reynard/study/grag/project 5/7/main.cpp
+	<fstream>
+	<deque>
+	<vector>
+	<algorithm>
+	<math.h>
+
