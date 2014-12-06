@@ -12,6 +12,7 @@ using namespace std;
 
 
 #define ALPHABET_SIZE 26
+<<<<<<< HEAD
 #define D 1000000000LL
 
 int get_index(char c)
@@ -24,21 +25,15 @@ unsigned long long int hash_func(string s)
 {
   unsigned long long int f = 0;
   for (int i = 0; i < s.length(); ++i){
-    f = (f*ALPHABET_SIZE + get_index(s[i])) % D;
-  }
-  return f;
-}
-
+=======
 
 unsigned long long int Degree[10000001];
-
 
 int main()
 {
   ifstream in;
   in.open("input.txt");
-  // in.open("14.in");
-  
+
   ofstream out;
   out.open("output.txt");
 
