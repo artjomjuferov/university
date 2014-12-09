@@ -156,6 +156,27 @@ var CalcAndDraw = function(points){
   ctx.clearCanvas(window.canvas);
 
   ctx.drawAllPoints(points);
+  $(".first-point").children(".coords").children(".x-coord").val(window.points[1].x);
+  $(".first-point").children(".coords").children(".y-coord").val(window.points[1].y);
+  $(".first-point").children(".coords").children(".z-coord").val(window.points[1].z);
+  $(".first-point").children(".v-coords").children(".x-coord").val(window.points[1].x);
+  $(".first-point").children(".v-coords").children(".y-coord").val(window.points[1].y);
+  $(".first-point").children(".v-coords").children(".z-coord").val(window.points[1].z);
+  
+  $(".second-point").children(".coords").children(".x-coord").val(window.points[2].x);
+  $(".second-point").children(".coords").children(".y-coord").val(window.points[2].y);
+  $(".second-point").children(".coords").children(".z-coord").val(window.points[2].z);
+  $(".second-point").children(".v-coords").children(".x-coord").val(window.points[2].x);
+  $(".second-point").children(".v-coords").children(".y-coord").val(window.points[2].y);
+  $(".second-point").children(".v-coords").children(".z-coord").val(window.points[2].z);
+  
+  $(".third-point").children(".coords").children(".x-coord").val(window.points[3].x);
+  $(".third-point").children(".coords").children(".y-coord").val(window.points[3].y);
+  $(".third-point").children(".coords").children(".z-coord").val(window.points[3].z);
+  $(".third-point").children(".v-coords").children(".x-coord").val(window.points[3].x);
+  $(".third-point").children(".v-coords").children(".y-coord").val(window.points[3].y);
+  $(".third-point").children(".v-coords").children(".z-coord").val(window.points[3].z);
+
 };
 
 
