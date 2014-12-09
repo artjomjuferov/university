@@ -18,6 +18,7 @@ struct node
     node(string k) { key = k; left = right = 0; height = 1; }
 };
 
+
 unsigned char height(node* p)
 {
     return p?p->height:0;
@@ -84,6 +85,20 @@ node* add(node* p, string k)
     return balance(p);
 }
 
+int search(node* p, string k, int h)
+{
+	while(p!=0){
+        if(p->key==k)
+            return h;
+        h++;
+        if(k<p->key)
+            p=p->left;
+        else
+            p=p->right;
+    }
+    return 0; 
+}
+
 node* findmin(node* p) 
 {
     return p->left?findmin(p->left):p;
@@ -118,23 +133,6 @@ node* del(node* p, string k)
     return balance(p);
 }
 
-int search(node* p, string k, int h)
-{
-	if(!p)
-		return 0;
-	if (p->key == k )
-	{
-	    cout << "das?!" <<h <<endl;
-	    return h;
-	}
-	
-	int l = search(p->left, k, ++h);
-	int r = search(p->right, k, ++h);
-	
-	cout << l << " " << r << " " << h  << " " << p->key<< endl;
-	
-	return l>r?l:r; 
-}
 
 void print_tree(node* p)
 {
@@ -167,30 +165,30 @@ int main()
 //	cout << head << endl;
     int i =0;
 	while (s[0] != 'E'){
-		getline(in, s);
-        
-		cout << i++ << " " << s ;
+		in >> s;
+// 		cout << i++ << " " << s ;
 		
-		if (s[0] == '+')
-			head = add(head, s.substr(1, s.length()));
+		if (s[0] == '+'){
+		    if(search(head, s.substr(1, s.length())))==0)
+			    head = add(head, s.substr(1, s.length()));
+		}
 		else if (s[0] == '-')
 			head = del(head, s.substr(1, s.length()));	
 		else if (s[0] == '?'){
-		    cout << endl;
+		  //  cout << endl;
 			int h = search(head, s.substr(1, s.length()), 1);
 			cout << endl;
-			if (h == 0)
-			{
+			if (h == 0){
 				out << 'n';
-				cout<< " !!!!!!!!!!!!!!! n";
+				// cout<< " !!!!!!!!!!!!!!! n";
 			}else{
 				out << h;
-				cout<< " !!!!!!!!!!!!!! "<<h;
+				// cout<< " !!!!!!!!!!!!!! "<<h;
 		    }
 		}
-		cout << endl;
-		print_tree(head);
-		cout << endl;
+// 		cout << endl;
+// 		print_tree(head);
+// 		cout << endl;
 	}
 	
 	in.close();
