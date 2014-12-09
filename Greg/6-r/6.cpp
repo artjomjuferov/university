@@ -27,16 +27,13 @@ void sort(string& x, vector <int> &s)
 	}
 }
 
-
-
-
 int main()
 {
 	ifstream in("input.txt");
 	ofstream out("output.txt");
 
 	string x;
-	getline(in, x);
+	in >> x;
 	x = x + char(int('a')-1);
 
 	int n = x.length();
@@ -49,8 +46,6 @@ int main()
   vector <int> start(n);
 	
 	sort(x, s);
-
-
 
 	for (int i = 0; i < n; i++)
 	{
