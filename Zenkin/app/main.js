@@ -1,6 +1,6 @@
 window.gravity = 10; // гравитационная постоянная
-window.dt = 0.01; // шаг по времени
-window.time = 20;
+window.dt = 0.1; // шаг по времени
+window.time = 15;
 window.points = new Array(3);
 window.run = false;
 window.pathPoints = new Array();
@@ -17,17 +17,20 @@ $(document).ready(function(){
     var y = ev.pageY - window.canvas.offsetTop;
   
     if (window.points[0] === undefined){
-      window.points[0] = (new Point(x, y, "red"));
+      window.points[0] = (new Point(x, y,0, "red"));
       $(".first-point").children(".coords").children(".x-coord").val(x);
       $(".first-point").children(".coords").children(".y-coord").val(y);
+      $(".first-point").children(".coords").children(".z-coord").val(0);
     }else if (window.points[1] === undefined){
-      window.points[1] = (new Point(x, y, "blue"));
+      window.points[1] = (new Point(x, y,0, "blue"));
       $(".second-point").children(".coords").children(".x-coord").val(x);
       $(".second-point").children(".coords").children(".y-coord").val(y);
+      $(".second-point").children(".coords").children(".z-coord").val(0);
     }else if (window.points[2] === undefined){
-      window.points[2] = (new Point(x, y, "green"));
+      window.points[2] = (new Point(x, y,0, "green"));
       $(".third-point").children(".coords").children(".x-coord").val(x);
       $(".third-point").children(".coords").children(".y-coord").val(y);
+      $(".third-point").children(".coords").children(".z-coord").val(0);
     }else{
       alert("3 points already exist");
     }
@@ -84,8 +87,10 @@ $(document).ready(function(){
     
     var x = form.children(".coords").children(".x-coord").val();
     var y = form.children(".coords").children(".y-coord").val();
+    var z = form.children(".coords").children(".z-coord").val();
     var vx = form.children(".v-coords").children(".x-coord").val();
     var vy = form.children(".v-coords").children(".y-coord").val();
+    var vz = form.children(".v-coords").children(".z-coord").val();
     var m = form.children(".weight").val();
     
     if (vx === ""){
@@ -99,6 +104,11 @@ $(document).ready(function(){
     }else{
       vy = parseFloat(vy);
     }
+    if (vz === ""){
+      vz = undefined;
+    }else{
+      vz = parseFloat(vz);
+    }
 
     if (m === ""){
       m = undefined;
@@ -107,11 +117,11 @@ $(document).ready(function(){
     }
 
     if (ind === "f"){
-      window.points[0] = (new Point(x, y, "red", vx, vy, m));
+      window.points[0] = (new Point(x, y, z, "red", vx, vy, vz, m));
     } else if (ind === "s"){
-       window.points[1] = (new Point(x, y, "blue", vx, vy, m));
+       window.points[1] = (new Point(x, y, z,"blue", vx, vy, vz, m));
     } else if (ind === "t"){
-       window.points[2] = (new Point(x, y, "green", vx, vy, m));
+       window.points[2] = (new Point(x, y, z, "green", vx, vy, vz, m));
     }
 
     var ctx = window.canvas.getContext('2d');
@@ -135,13 +145,12 @@ var addToPathArr = function(point) {
   }else {
      color = "#A2B1F1";
   }
-  var newPoint = new Point(x, y, color);
+  var newPoint = new Point(x, y,0, color);
   window.pathPoints[x][y] = newPoint;
 };
 
 var CalcAndDraw = function(points){
-  CalcForcesSimple(points, window.gravity);
-  MovePoints(points, window.dt);
+  MovePoints(points, window.dt, window.gravity);
 
   var ctx = window.canvas.getContext('2d');
   ctx.clearCanvas(window.canvas);
@@ -209,9 +218,10 @@ var reset = function(){
 ////////issue 3 points//////// 
 //////////////////////////////
 
-function Point(_x, _y, _color, _vx, _vy, _m) {
+function Point(_x, _y,_z, _color, _vx, _vy, _vz,_m) {
   this.x =  Number(_x);
   this.y =  Number(_y);
+  this.z =  Number(_y);
   
   this.color = _color;
   
@@ -226,6 +236,11 @@ function Point(_x, _y, _color, _vx, _vy, _m) {
   } else{
     this.vy = _vy;
   }
+  if (_vz === undefined){
+    this.vz = 0.5-Math.random();
+  } else{
+    this.vz = _vz;
+  }
     
   if (_m === undefined){
     this.m = Math.random();
@@ -235,24 +250,26 @@ function Point(_x, _y, _color, _vx, _vy, _m) {
 
   this.forceX = 0;
   this.forceY = 0;
+  this.forceZ = 0;
 }
 
-var CalcForcesSimple = function(points, gravity){
-   for (var i = 0; i < points.length; i++) {
+var MovePoints = function(points, dt, gravity){
+  for (var i = 0; i < points.length; i++) {
     for (var j = 0; j < points.length; j++) {
       if ((i == j) || (points[i] === undefined) || (points[j] === undefined)){
         continue;
       } 
       var dx = points[j].x - points[i].x; 
       var dy = points[j].y - points[i].y;
-      var fabs = (gravity * points[i].m * points[j].m)/(dx*dx + dy*dy);
-      points[i].forceX = points[i].forceX + fabs * dx * Math.sqrt(dx*dx + dy*dy);
-      points[i].forceY = points[i].forceY + fabs * dy * Math.sqrt(dx*dx + dy*dy);
+      var dz = points[j].z - points[i].z;
+      var r = Math.sqrt(Math.pow(dx, 2)+Math.pow(dy, 2)+Math.pow(dz, 2));
+      var fabs = (gravity *Math.pow(points[i].m, 2))/Math.pow(r, 2);
+      points[i].forceX =+ fabs * dx * r;
+      points[i].forceY =+ fabs * dy * r;
+      points[i].forceZ =+ fabs * dz * r;
     }
   }
-};
-
-var MovePoints = function(points, dt){
+  
   for (var i = 0; i < points.length; i++) {
     if (points[i] === undefined){
       continue;
@@ -260,15 +277,19 @@ var MovePoints = function(points, dt){
     
     var dvx = points[i].forceX * dt / points[i].m;
     var dvy = points[i].forceY * dt / points[i].m;
+    var dvz = points[i].forceZ * dt / points[i].m;
     
     points[i].x += (points[i].vx + dvx / 2) * dt;
     points[i].y += (points[i].vy + dvy / 2) * dt;
+    points[i].z += (points[i].vz + dvz / 2) * dt;
     
     points[i].vx += dvx;
     points[i].vy += dvy;
+    points[i].vz += dvz;
     
     points[i].forceX = 0;
     points[i].forceY = 0;
+    points[i].forceZ = 0;
     
   }
 };
@@ -290,8 +311,7 @@ var onOneLine = function(iterationN, massN, dt, gravity){
     p[2] = new Point(30,30,"some",0,0,j);
     
     for(var i = 0; i < iterationN; i++){
-      CalcForcesSimple(p, gravity);
-      MovePoints(p, dt);
+      MovePoints(p, dt, gravity);
       for(var k = 0; k < p.length; k++){
         var tmp = p[k].x/p[k].y;
         error += Math.abs(1-tmp);
