@@ -1,6 +1,6 @@
 window.gravity = 10; // гравитационная постоянная
 window.dt = 0.1; // шаг по времени
-window.time = 15;
+window.time = 100;
 window.points = new Array(3);
 window.run = false;
 window.pathPoints = new Array();
@@ -156,26 +156,26 @@ var CalcAndDraw = function(points){
   ctx.clearCanvas(window.canvas);
 
   ctx.drawAllPoints(points);
-  $(".first-point").children(".coords").children(".x-coord").val(window.points[1].x);
-  $(".first-point").children(".coords").children(".y-coord").val(window.points[1].y);
-  $(".first-point").children(".coords").children(".z-coord").val(window.points[1].z);
-  $(".first-point").children(".v-coords").children(".x-coord").val(window.points[1].x);
-  $(".first-point").children(".v-coords").children(".y-coord").val(window.points[1].y);
-  $(".first-point").children(".v-coords").children(".z-coord").val(window.points[1].z);
+  // $(".first-point").children(".coords").children(".x-coord").val(window.points[1].x);
+  // $(".first-point").children(".coords").children(".y-coord").val(window.points[1].y);
+  // $(".first-point").children(".coords").children(".z-coord").val(window.points[1].z);
+  // $(".first-point").children(".v-coords").children(".x-coord").val(window.points[1].x);
+  // $(".first-point").children(".v-coords").children(".y-coord").val(window.points[1].y);
+  // $(".first-point").children(".v-coords").children(".z-coord").val(window.points[1].z);
   
-  $(".second-point").children(".coords").children(".x-coord").val(window.points[2].x);
-  $(".second-point").children(".coords").children(".y-coord").val(window.points[2].y);
-  $(".second-point").children(".coords").children(".z-coord").val(window.points[2].z);
-  $(".second-point").children(".v-coords").children(".x-coord").val(window.points[2].x);
-  $(".second-point").children(".v-coords").children(".y-coord").val(window.points[2].y);
-  $(".second-point").children(".v-coords").children(".z-coord").val(window.points[2].z);
+  // $(".second-point").children(".coords").children(".x-coord").val(window.points[2].x);
+  // $(".second-point").children(".coords").children(".y-coord").val(window.points[2].y);
+  // $(".second-point").children(".coords").children(".z-coord").val(window.points[2].z);
+  // $(".second-point").children(".v-coords").children(".x-coord").val(window.points[2].x);
+  // $(".second-point").children(".v-coords").children(".y-coord").val(window.points[2].y);
+  // $(".second-point").children(".v-coords").children(".z-coord").val(window.points[2].z);
   
-  $(".third-point").children(".coords").children(".x-coord").val(window.points[3].x);
-  $(".third-point").children(".coords").children(".y-coord").val(window.points[3].y);
-  $(".third-point").children(".coords").children(".z-coord").val(window.points[3].z);
-  $(".third-point").children(".v-coords").children(".x-coord").val(window.points[3].x);
-  $(".third-point").children(".v-coords").children(".y-coord").val(window.points[3].y);
-  $(".third-point").children(".v-coords").children(".z-coord").val(window.points[3].z);
+  // $(".third-point").children(".coords").children(".x-coord").val(window.points[3].x);
+  // $(".third-point").children(".coords").children(".y-coord").val(window.points[3].y);
+  // $(".third-point").children(".coords").children(".z-coord").val(window.points[3].z);
+  // $(".third-point").children(".v-coords").children(".x-coord").val(window.points[3].x);
+  // $(".third-point").children(".v-coords").children(".y-coord").val(window.points[3].y);
+  // $(".third-point").children(".v-coords").children(".z-coord").val(window.points[3].z);
 
 };
 
@@ -315,29 +315,10 @@ var MovePoints = function(points, dt, gravity){
   }
 };
 
-// class TESTER, for comparing results aproximate solution with exact solution 
-
-// m(А)=m(Б)=m(В)
-// все 3(А, Б, В) тела на одной прямой с одним весом, и АБ=БВ и тело Б всегда на месте, скорости нулевые
-// A и В движуться по прямой 
-// return средне арефметическую погрешность отклонение от прямой А и Б
-var onOneLine = function(iterationN, massN, dt, gravity){
-  var error = 0;
+// Работаем в системе земля-луна. Первая точка земля, вторая луна, 3ья ИНТ.
+var MovePointsEluer = function(points, dt, gravity){
   
-  for(var j = 1; j <= massN; j++){ 
-    var p = [];
-    
-    p[0] = new Point(10,10,"some",0,0,j);
-    p[1] = new Point(20,20,"some",0,0,j);
-    p[2] = new Point(30,30,"some",0,0,j);
-    
-    for(var i = 0; i < iterationN; i++){
-      MovePoints(p, dt, gravity);
-      for(var k = 0; k < p.length; k++){
-        var tmp = p[k].x/p[k].y;
-        error += Math.abs(1-tmp);
-      }
-    }
-  }
-  return error/(iterationN*massN);
-}
+  window.points[0] = (new Point(x, y, z, "red", vx, vy, vz, m));
+  window.points[1] = (new Point(x, y, z, "green", vx, vy, vz, m));
+  window.points[2] = (new Point(x, y, z, "blue", vx, vy, vz, m));
+};

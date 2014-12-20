@@ -42,8 +42,8 @@ int compare(string *pattern,string *s,int offset)
 
 int main()
 {
-	ifstream in("input.txt");
-	ofstream out("output.txt");
+    ifstream in("input.txt");
+    ofstream out("output.txt");
 
     string a; // incoming row string
     string pattern;
@@ -116,14 +116,6 @@ int main()
 
     for (int h=1;h<n;h*=2) // <=
     {
-    /*
-           for (int l=0;l< s.size();l++)
-            {
-            printf ("%d ",s[l]);
-            }
-            printf("\n");
-    */
-
         siz.assign(n,0);
         for (int i=0;i<n;i++)
         {
@@ -225,7 +217,7 @@ int main()
     out<<occurrence;
 
     in.close();
-	out.close();
+    out.close();
 
-	return 0;
+    return 0;
 }

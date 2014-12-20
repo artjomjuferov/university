@@ -9,43 +9,45 @@
 
 using namespace std;
 
+#define sizeAlph 50
+#define sizeN 10000000
 
-void sort(string& x, vector <int> &s)
+
+void sort(string& x, int count[], int s[])
 {
-	vector <int> count(int(char('z')-char('a')+1));
-	
-	for (int i = 0; i < count.size(); i++)
+	for (int i = 0; i < sizeAlph; i++)
 	  count[i] = 0;
-	for (int i = 0; i < s.size(); i++)
+	for (int i = 0; i < x.length(); i++)
 	  count[x[i]-int('a')+1]++;
-	for (int i = 1; i < count.size(); i++)
+	for (int i = 1; i < sizeAlph; i++)
 	  count[i] += count[i - 1];
 	
-	for (int i = 0; i < s.size(); i++){
+	for (int i = 0; i < x.length(); i++){
 		count[x[i]-int('a')+1]--;
 		s[count[x[i]-int('a')+1]] = i;
 	}
 }
 
+
+int cc[sizeAlph];
+int s1[sizeN], pos[sizeN], flag[sizeN];
+int size[sizeN], start[sizeN], s[sizeN];
+
+
+
 int main()
 {
 	ifstream in("input.txt");
+	// ifstream in("03.in");
 	ofstream out("output.txt");
 
 	string x;
 	in >> x;
+	// cout << x;
 	x = x + char(int('a')-1);
 
 	int n = x.length();
-	
-	vector <int> s(n);
-  vector <int> s1(n);
-  vector <int> pos(n);
-  vector <int> flag(n);
-  vector <int> size(n);
-  vector <int> start(n);
-	
-	sort(x, s);
+	sort(x, cc, s);
 
 	for (int i = 0; i < n; i++)
 	{
