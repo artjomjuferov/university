@@ -43,6 +43,7 @@ int compare(string *pattern,string *s,int offset)
 int main()
 {
     ifstream in("input.txt");
+    // ifstream in("14.in");
     ofstream out("output.txt");
 
     string a; // incoming row string
@@ -157,6 +158,7 @@ int main()
         }
     }
 
+    
     int bottom=1;
     int overhead=s.size()-1;
 

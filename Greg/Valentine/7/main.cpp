@@ -203,7 +203,7 @@ int main()
                 {
                     target=bottom;
                 }
-                else ша (compare(&pattern,&a,s[overhead]) )
+                else if (compare(&pattern,&a,s[overhead]) )
                 {
                     target=overhead;
                 }

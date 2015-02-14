@@ -84,7 +84,6 @@ int searchR(int n, string x, string A, int s[])
 }
 
 
-
 int cc[sizeAlph];
 int s1[sizeN], pos[sizeN], flag[sizeN];
 int size[sizeN], start[sizeN], s[sizeN];
@@ -96,14 +95,14 @@ int main()
 	// ifstream in("14.in");
 	ofstream out("output.txt");
 
-	string x;
-	in >> x;
-	
   string A;
 	in >> A;
 	A = A + char(int('a')-1);
 
 	int n = A.length();
+
+	int K;
+	in >> K;
 	
 	sort(A, cc, s);
 	
@@ -155,15 +154,6 @@ int main()
 		}
 		h *= 2;
 	}
-	
-	
-  int tmpL = searchL(n,x,A,s);
-  int tmpR = searchR(n,x,A, s);
-  
-  if(tmpL==0)
-  	out << 0;
-  else
-  	out << tmpR-tmpL+1;
 
 	return 0;
 }

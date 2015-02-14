@@ -20,17 +20,17 @@ $(document).ready(function(){
       window.points[0] = (new Point(x, y,0, "red"));
       $(".first-point").children(".coords").children(".x-coord").val(x);
       $(".first-point").children(".coords").children(".y-coord").val(y);
-      $(".first-point").children(".coords").children(".z-coord").val(0);
+      // $(".first-point").children(".coords").children(".z-coord").val(0);
     }else if (window.points[1] === undefined){
       window.points[1] = (new Point(x, y,0, "blue"));
       $(".second-point").children(".coords").children(".x-coord").val(x);
       $(".second-point").children(".coords").children(".y-coord").val(y);
-      $(".second-point").children(".coords").children(".z-coord").val(0);
+      // $(".second-point").children(".coords").children(".z-coord").val(0);
     }else if (window.points[2] === undefined){
       window.points[2] = (new Point(x, y,0, "green"));
       $(".third-point").children(".coords").children(".x-coord").val(x);
       $(".third-point").children(".coords").children(".y-coord").val(y);
-      $(".third-point").children(".coords").children(".z-coord").val(0);
+      // $(".third-point").children(".coords").children(".z-coord").val(0);
     }else{
       alert("3 points already exist");
     }
@@ -87,10 +87,10 @@ $(document).ready(function(){
     
     var x = form.children(".coords").children(".x-coord").val();
     var y = form.children(".coords").children(".y-coord").val();
-    var z = form.children(".coords").children(".z-coord").val();
+    // var z = form.children(".coords").children(".z-coord").val();
     var vx = form.children(".v-coords").children(".x-coord").val();
     var vy = form.children(".v-coords").children(".y-coord").val();
-    var vz = form.children(".v-coords").children(".z-coord").val();
+    // var vz = form.children(".v-coords").children(".z-coord").val();
     var m = form.children(".weight").val();
     
     if (vx === ""){
@@ -117,11 +117,11 @@ $(document).ready(function(){
     }
 
     if (ind === "f"){
-      window.points[0] = (new Point(x, y, z, "red", vx, vy, vz, m));
+      window.points[0] = (new Point(x, y, "red", vx, vy, m));
     } else if (ind === "s"){
-       window.points[1] = (new Point(x, y, z,"blue", vx, vy, vz, m));
+       window.points[1] = (new Point(x, y,"blue", vx, vy, m));
     } else if (ind === "t"){
-       window.points[2] = (new Point(x, y, z, "green", vx, vy, vz, m));
+       window.points[2] = (new Point(x, y, "green", vx, vy, m));
     }
 
     var ctx = window.canvas.getContext('2d');
@@ -242,7 +242,7 @@ var reset = function(){
 function Point(_x, _y,_z, _color, _vx, _vy, _vz,_m) {
   this.x =  Number(_x);
   this.y =  Number(_y);
-  this.z =  Number(_y);
+  // this.z =  Number(_y);
   
   this.color = _color;
   
@@ -257,11 +257,11 @@ function Point(_x, _y,_z, _color, _vx, _vy, _vz,_m) {
   } else{
     this.vy = _vy;
   }
-  if (_vz === undefined){
-    this.vz = 0.5-Math.random();
-  } else{
-    this.vz = _vz;
-  }
+  // if (_vz === undefined){
+  //   this.vz = 0.5-Math.random();
+  // } else{
+  //   this.vz = _vz;
+  // }
     
   if (_m === undefined){
     this.m = Math.random();
@@ -287,7 +287,7 @@ var MovePoints = function(points, dt, gravity){
       var fabs = (gravity *Math.pow(points[i].m, 2))/Math.pow(r, 2);
       points[i].forceX =+ fabs * dx * r;
       points[i].forceY =+ fabs * dy * r;
-      points[i].forceZ =+ fabs * dz * r;
+      // points[i].forceZ =+ fabs * dz * r;
     }
   }
   
@@ -298,27 +298,27 @@ var MovePoints = function(points, dt, gravity){
     
     var dvx = points[i].forceX * dt / points[i].m;
     var dvy = points[i].forceY * dt / points[i].m;
-    var dvz = points[i].forceZ * dt / points[i].m;
+    // var dvz = points[i].forceZ * dt / points[i].m;
     
     points[i].x += (points[i].vx + dvx / 2) * dt;
     points[i].y += (points[i].vy + dvy / 2) * dt;
-    points[i].z += (points[i].vz + dvz / 2) * dt;
+    // points[i].z += (points[i].vz + dvz / 2) * dt;
     
     points[i].vx += dvx;
     points[i].vy += dvy;
-    points[i].vz += dvz;
+    // points[i].vz += dvz;
     
     points[i].forceX = 0;
     points[i].forceY = 0;
-    points[i].forceZ = 0;
+    // points[i].forceZ = 0;
     
   }
 };
 
-// Работаем в системе земля-луна. Первая точка земля, вторая луна, 3ья ИНТ.
+
 var MovePointsEluer = function(points, dt, gravity){
   
-  window.points[0] = (new Point(x, y, z, "red", vx, vy, vz, m));
-  window.points[1] = (new Point(x, y, z, "green", vx, vy, vz, m));
-  window.points[2] = (new Point(x, y, z, "blue", vx, vy, vz, m));
+  window.points[0] = (new Point(x, y, "red", vx, vy, m));
+  window.points[1] = (new Point(x, y, "green", vx, vy, m));
+  window.points[2] = (new Point(x, y, "blue", vx, vy, m));
 };

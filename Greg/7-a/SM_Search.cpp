@@ -165,7 +165,8 @@ int binary_search(string& A, string& x)
 
 int main()
 {
-	ifstream in("input.txt");
+	// ifstream in("input.txt");
+	ifstream in("14.in");
 	ofstream out("output.txt");
 
 	string x;
