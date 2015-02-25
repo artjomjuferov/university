@@ -1,0 +1,9 @@
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\bin\Debug\_003_Shkala.exe
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\bin\Debug\_003_Shkala.pdb
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\obj\x86\Debug\_003_Shkala.Form1.resources
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\obj\x86\Debug\_003_Shkala.Properties.Resources.resources
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\obj\x86\Debug\_003_Shkala.exe
+C:\WORK\C_Sharp\_003_Shkala\_003_Shkala\obj\x86\Debug\_003_Shkala.pdb

@@ -1,0 +1,11 @@
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\_005_ShablonForm.Form1.resources
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\_005_ShablonForm.Properties.Resources.resources
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\bin\Debug\_005_ShablonForm.exe
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\bin\Debug\_005_ShablonForm.pdb
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\_005_ShablonForm.exe
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\_005_ShablonForm.pdb
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\_005_ShablonForm.Form2.resources
+C:\WORK\C_Sharp\_005_ShablonForm\_005_ShablonForm\obj\x86\Debug\_005_ShablonForm.Form3.resources
