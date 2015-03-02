@@ -4,6 +4,7 @@
 #include <vector>
 #include <deque>
 #include <cmath>
+
 #define IN "input.txt"
 #define OUT "output.txt"
 const int NMAX=501;
