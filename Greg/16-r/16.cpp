@@ -5,6 +5,9 @@
 #include <deque>
 #include <cmath>
 
+#define IN "input.txt"
+#define OUT "output.txt"
+
 const int NMAX=501;
 const int MMAX=1000000000;
 
@@ -127,18 +130,8 @@ void ans(const int&n,int &fl,int &co,const int&s, const int&t)
 
 int main()
 {
-	ifstream in("input.txt");
-	ofstream out("output.txt");
-	
-    int n,s,t;
-    scanf("%d %d %d",&n,&s,&t);
-    reading(n);
-    int fl=0,co=0;
-    ans(n,fl,co,s,t);
-    printf("%d %d\n",fl,co);
-    return 0;
-}
-
+    freopen(IN,"r",stdin);
+    freopen(OUT,"w",stdout);
     int n,s,t;
     scanf("%d %d %d",&n,&s,&t);
     reading(n);
