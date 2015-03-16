@@ -14,25 +14,23 @@ using namespace std;
 int G[502][502], F[502][502]; 
 int C[502], H[502], E[502];
 vector<int> Sibs[502];
-  
-    
+
+int Head[502], Current[502], Next[502];
+vector<int> L;
+
 void push(int u,int v){
   int delta = min(E[u], G[u][v] - F[u][v]);
-  // cout << u <<" " << v << endl;
-  // cout << delta << endl;
-	F[u][v] += delta;
+  F[u][v] += delta;
 	F[v][u] = -F[u][v];
 	E[u] -= delta;
 	E[v] += delta;
 }
-
 
 void lift(int u)
 {
 	int max = INT_MAX;
 	for (int v=0; v<Sibs[u].size(); v++){
 	  int sib = Sibs[u][v];
-	  // cout << sib << " " << u << endl;
   	if (G[u][sib] > F[u][sib])
   		max = min(max, H[sib]);
 	}	
@@ -83,6 +81,21 @@ int firstToPush(int u, int n){
 	return -1;
 }
 
+int cutAndToBegin(vector<int> &L, int u){
+	int tmp = L[u];
+	for(int i=u; i>0;--i){
+		L[i] = L[i-1];
+	}
+	L[0] = tmp;
+}
+
+void showVector(vector<int> &A, string name){
+  cout << name << endl;
+  for (int i=0; i<A.size(); i++)
+    cout << A[i] << " ";
+  cout << endl << endl; 
+}
+
 int main()
 {
   ifstream in("input.txt");
@@ -110,31 +123,52 @@ int main()
 		E[u] = F[1][u];
 	}
 	
-	// show2d(n, F, "F");
-	// show1d(n, E, "E");
- // show1d(n, H, "H");
-
-	// int k =0;
-  while (true)
-	{
-		// k++;
-	  // show1d(n, E, "E");
-   // show1d(n, H, "H");
-    
-		int u = firstE(n);
-		if (u == -1)
-			break;
-
-		int v = firstToPush(u, n);
+	for (int u = 2; u<n; u++)
+		L.push_back(u);
 		
-		// cout << u << v << endl;
-		if (v == -1){
-			lift(u);
-		}else{
-			push(u, v);
+	for (int u = 1; u<=n; u++){
+		Current[u] = 0;
+	}
+	
+	int now = 0;
+ 	int i = 0;
+  while(i<L.size()){
+		
+		int u = L[i];
+		int nowH = H[u];
+		
+		while (E[u] > 0)
+		{
+			int ind = Current[u];
+			int v = Sibs[u][ind];
+			
+			cout << "--------------------------"<<endl;
+			cout << "i="<<i << endl;
+			cout << "u="<<u << endl;
+			cout << "v="<<v << endl;
+			cout << "Current="<<Current[u] << endl;
+			cout << "size="<<Sibs[u].size() << endl;
+			show1d(n, H, "H");
+			show1d(n, E, "E");
+							
+			showVector(L, "L");
+			
+			if (v == 0)
+			{
+				lift(u);
+				Current[u] = 0;
+			} else if (G[u][v] > F[u][v] && H[u] == H[v] + 1){
+				push(u, v);
+			} else{
+				Current[u]++;
+			}
 		}
-		// if (k>50)
-		// 	return 0;
+		if (H[u] > nowH){
+			cutAndToBegin(L, u);
+			i=1;
+		}else{
+			i++;
+		}
 	}
 	
 	out << E[n] << endl;

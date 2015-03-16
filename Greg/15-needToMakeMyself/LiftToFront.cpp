@@ -3,6 +3,7 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
@@ -18,6 +19,13 @@ vInt h;
 vector < lIter > current;
 list < int > L;
 vector < list < int > > neighbor;
+
+void showVector(vector<int> &A, string name){
+  cout << name << endl;
+  for (int i=0; i<A.size(); i++)
+    cout << A[i] << " ";
+  cout << endl << endl; 
+}
 
 void init()
 {

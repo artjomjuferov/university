@@ -12,7 +12,7 @@
 using namespace std;
 
 
-const int maxN = 1000;
+const int maxN = 1001;
 
 int P[maxN], TmpP[maxN],Parent[maxN],Mark[maxN];
 int G[maxN][maxN], W[maxN][maxN], F[maxN][maxN];
@@ -52,7 +52,7 @@ int getMin(int n)
 	return min;
 }
 
-int Queue [1000000];
+int Queue[1000000];
 
 void bfs(int v, int n)
 {
@@ -62,7 +62,7 @@ void bfs(int v, int n)
 	Queue[front] = v;
 	front++;
 	Mark[v] = 1;
-	while (back <= front)
+	while (back < front)
 	{
 		v = Queue[back];
 		back++;
